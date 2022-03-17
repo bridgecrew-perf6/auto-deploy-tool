@@ -1,12 +1,9 @@
-from unicodedata import name
 import typer
 from typing import Optional
 from . import cli_windows_service
 from . import cli_file
 
 __version__ = "0.1.0"
-
-
 
 cli = typer.Typer()
 cli.add_typer(cli_windows_service.cli, name="windows-service")

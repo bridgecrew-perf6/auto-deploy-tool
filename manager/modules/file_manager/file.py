@@ -1,7 +1,7 @@
 import logging
 import shutil
 from operator import contains
-from modules.file_manager.util import is_file
+from .util import is_file
 
 class File:
 

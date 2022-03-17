@@ -3,17 +3,15 @@ from tabulate import tabulate
 from collections import namedtuple
 import logging
 from typing import List, Optional
-from modules.file_manager import file, folder
-from modules.windows_service import wsm
+from manager.modules.file_manager import file, folder
+from manager.modules.windows_service import wsm
 from .messages import Messages
 import click_spinner
 
 cli = typer.Typer()
 logger = logging.getLogger()
 
-
 service_result = namedtuple("service_result", "computer service state status message")
-
 
 def show_computers_results(results: list = None) -> None:
 
@@ -162,7 +160,7 @@ def get_state_service(service_name: str, remote_computer: Optional[List[str]] = 
                 state = win_service.get_state()
 
                 results.append(service_result(computer_label, service_name, state,
-                                              Messages.SUCCESS, "Service has been started."))
+                                              Messages.SUCCESS, "Current service state"))
 
             except Exception as err:
                 results.append(service_result(computer_label, service_name, state,
@@ -203,7 +201,6 @@ def deploy_update(service_name: str,
                 win_service.stop()
                 logger.debug("service has been stopped")
 
-                
                 logger.debug(f"copying files/folder from {source_folder} to {destination_folder}")
                 f = folder.Folder()
                 f.copy(source_folder, destination_folder, ignore_pattern=list(ignore_pattern))

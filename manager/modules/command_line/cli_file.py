@@ -1,7 +1,7 @@
 import typer
 import logging
 import click_spinner
-from modules.file_manager import file
+from manager.modules.file_manager import file
 
 cli = typer.Typer()
 logger = logging.getLogger()
