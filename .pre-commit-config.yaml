@@ -20,5 +20,5 @@ repos:
       - id: pylint
         name: pylint
         language: system
-        entry: pylint --fail-under=8 manager 
+        entry: pylint --fail-under=9 --fail-on=invalid-name,wrong-import-order,ungrouped-imports manager 
         pass_filenames: false
