@@ -1,3 +1,5 @@
+"""run the app"""
+
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from manager.modules.command_line import cli
@@ -12,4 +14,5 @@ logging.basicConfig(
 
 
 def run():
+    """run the cli component"""
     cli()

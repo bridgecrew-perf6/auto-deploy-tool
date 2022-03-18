@@ -1,11 +1,13 @@
+"""Manage Windows Service"""
+
 import logging
 import time
-from typing import Any
 from wmi import WMI, _wmi_object, _wmi_namespace
 from .messages import Messages
 
 
 class WSM:
+    """Class to manage windows service"""
 
     WAIT_RESTART_INTERVAL_SEC = 10
 
@@ -49,7 +51,7 @@ class WSM:
         if self.computer is None:
             try:
                 self.conn = WMI()
-                self.logger.debug(f"connected to local computer")
+                self.logger.debug("connected to local computer")
             except Exception as err:
                 self.logger.error("error to connect to local computer!!")
                 raise err
@@ -146,14 +148,16 @@ class WSM:
         time.sleep(self.WAIT_RESTART_INTERVAL_SEC)
         self.start()
 
-    def create(self) -> None:
-        """TBD"""
-        pass
-
-    def remove(self) -> None:
-        """TBD"""
-        pass
-
     def __repr__(self) -> str:
         self.__refresh_service_object()
-        return f"({self.service_name}, {self.service_object.State}, {self.service_object.Caption}, {self.service_object.Description}, {self.service_object.State}, {self.exec_path}, {self.service_object.ProcessId})"
+        return f"""
+            <
+                {self.service_name},
+                {self.service_object.State},
+                {self.service_object.Caption},
+                {self.service_object.Description},
+                {self.service_object.State},
+                {self.exec_path},
+                {self.service_object.ProcessId}
+            >
+        """

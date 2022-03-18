@@ -14,3 +14,11 @@ repos:
     rev: 3.7.9
     hooks:
       - id: flake8
+  
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        language: system
+        entry: pylint --fail-under=8 manager 
+        pass_filenames: false
