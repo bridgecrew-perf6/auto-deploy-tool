@@ -9,10 +9,15 @@ class WSM:
 
     WAIT_RESTART_INTERVAL_SEC = 10
 
-    def __init__(self, service_name: str, display_name: str = None,
-                 description: str = None,
-                 state: str = None,
-                 exec_path: str = None, computer: str = None) -> None:
+    def __init__(
+        self,
+        service_name: str,
+        display_name: str = None,
+        description: str = None,
+        state: str = None,
+        exec_path: str = None,
+        computer: str = None,
+    ) -> None:
         self.logger = logging.getLogger(__name__)
 
         self.service_name: str = service_name
@@ -46,15 +51,14 @@ class WSM:
                 self.conn = WMI()
                 self.logger.debug(f"connected to local computer")
             except Exception as err:
-                self.logger.error('error to connect to local computer!!')
+                self.logger.error("error to connect to local computer!!")
                 raise err
 
         try:
             self.conn = WMI(computer=self.computer)
             self.logger.debug(f"connected to remote computer: {self.computer}")
         except Exception as err:
-            self.logger.error(
-                f'error to connect to the remote computer: {self.computer}!!')
+            self.logger.error(f"error to connect to the remote computer: {self.computer}!!")
             raise err
 
         return self.conn
@@ -65,21 +69,20 @@ class WSM:
         Returns:
             _wmi_object: WMI Object containing methods and properties
         """
-        
+
         return self.conn.Win32_Service(Name=self.service_name)[0]
 
     def __refresh_service_object(self) -> None:
-        """Refresh the object info
-        """
+        """Refresh the object info"""
         self.service_object = self.__get_service_object()
 
     def get_state(self) -> str:
         """Get the state of the service
 
-            Returns:
-                The state
+        Returns:
+            The state
         """
-        
+
         self.__refresh_service_object()
         self.state = self.service_object.State
         return self.state
@@ -94,22 +97,19 @@ class WSM:
         """
 
         try:
-            if self.service_object.State.lower() == 'stopped':
+            if self.service_object.State.lower() == "stopped":
                 result = self.service_object.StartService()
 
                 if result[0] > 0:
-                    raise Exception(
-                        f'the request was not accepted. Message: {Messages.response_to_text(result)}')
+                    raise Exception(f"the request was not accepted. Message: {Messages.response_to_text(result)}")
 
-                self.logger.debug(f'after start: {self.get_state()}')
+                self.logger.debug(f"after start: {self.get_state()}")
                 if self.get_state().lower() != "running":
-                    raise Exception(
-                        f'the service is not running even after request. Current State: {self.get_state()}')
+                    raise Exception(f"the service is not running even after request. Current State: {self.get_state()}")
             else:
-                self.logger.debug('the service is already started.')
+                self.logger.debug("the service is already started.")
         except Exception as err:
-            self.logger.error(
-                f'error to start the service {self.service_name}. Current State: {self.get_state()}')
+            self.logger.error(f"error to start the service {self.service_name}. Current State: {self.get_state()}")
             raise err
         finally:
             self.__refresh_service_object()
@@ -124,30 +124,25 @@ class WSM:
         """
 
         try:
-            if self.service_object.State.lower() != 'stopped' and self.service_object.AcceptStop:
+            if self.service_object.State.lower() != "stopped" and self.service_object.AcceptStop:
                 result = self.service_object.StopService()
 
                 if result[0] > 0:
-                    raise Exception(
-                        f'the request was not accepted. Message: {Messages.response_to_text(result)}')
+                    raise Exception(f"the request was not accepted. Message: {Messages.response_to_text(result)}")
 
                 if self.get_state().lower() != "stopped":
-                    raise Exception(
-                        f'the service is not stopped even after request. Current State: {self.get_state()}')
+                    raise Exception(f"the service is not stopped even after request. Current State: {self.get_state()}")
         except Exception as err:
-            self.logger.error(
-                f'error to stop the service {self.service_name} . Current State: {self.get_state()}')
+            self.logger.error(f"error to stop the service {self.service_name} . Current State: {self.get_state()}")
             raise err
         finally:
             self.__refresh_service_object()
 
     def restart(self) -> None:
-        """restart the service waiting the specific interval
-        """
+        """restart the service waiting the specific interval"""
 
         self.stop()
-        self.logger.debug(
-            f"waiting {self.WAIT_RESTART_INTERVAL_SEC} seconds to start the service again...")
+        self.logger.debug(f"waiting {self.WAIT_RESTART_INTERVAL_SEC} seconds to start the service again...")
         time.sleep(self.WAIT_RESTART_INTERVAL_SEC)
         self.start()
 

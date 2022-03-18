@@ -4,7 +4,6 @@ from . import util
 
 
 class Folder:
-
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
 
@@ -20,8 +19,9 @@ class Folder:
             self.logger.debug(f"ignoring by pattern: {ignore_pattern}")
 
         try:
-            dest = shutil.copytree(src=source_path, dst=dest_path, dirs_exist_ok=True,
-                                   ignore=shutil.ignore_patterns(*ignore_pattern))
+            dest = shutil.copytree(
+                src=source_path, dst=dest_path, dirs_exist_ok=True, ignore=shutil.ignore_patterns(*ignore_pattern)
+            )
             self.logger.debug("folder copied successfuly")
 
             return dest

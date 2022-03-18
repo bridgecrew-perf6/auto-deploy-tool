@@ -10,7 +10,6 @@ cli.add_typer(cli_windows_service.cli, name="windows-service")
 cli.add_typer(cli_file.cli, name="file-manager")
 
 
-
 def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"Awesome CLI Version:  v{__version__}")
@@ -25,7 +24,7 @@ def main(
         "-v",
         help="Show the application's version and exit.",
         callback=_version_callback,
-        is_eager=True
+        is_eager=True,
     )
 ) -> None:
     return
