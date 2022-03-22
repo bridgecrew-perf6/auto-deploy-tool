@@ -21,7 +21,7 @@ repos:
   - repo: local
     hooks:
       - id: pylint
-        stages: [push]
+        # stages: [push]
         name: pylint
         language: system
         entry: pylint --fail-under=9 --fail-on=invalid-name,wrong-import-order,ungrouped-imports manager
