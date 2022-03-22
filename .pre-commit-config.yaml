@@ -4,21 +4,25 @@ repos:
     hooks:
       - id: black
         language: python_venv
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.5.0
+    rev: v4.1.0
     hooks:
       - id: check-added-large-files
-
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+      - id: double-quote-string-fixer
+      - id: trailing-whitespace
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.7.9
+    rev: 3.9.2
     hooks:
       - id: flake8
-  
   - repo: local
     hooks:
       - id: pylint
+        stages: [push]
         name: pylint
         language: system
-        entry: pylint --fail-under=9 --fail-on=invalid-name,wrong-import-order,ungrouped-imports manager 
+        entry: pylint --fail-under=9 --fail-on=invalid-name,wrong-import-order,ungrouped-imports MY_PROJECT_NAME
         pass_filenames: false
