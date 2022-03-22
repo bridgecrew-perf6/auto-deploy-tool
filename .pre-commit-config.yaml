@@ -18,6 +18,10 @@ repos:
     rev: 3.9.2
     hooks:
       - id: flake8
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v2.6.0
+    hooks:
+      - id: reorder-python-imports
   - repo: local
     hooks:
       - id: pylint
@@ -26,3 +30,11 @@ repos:
         language: system
         entry: pylint --fail-under=9 --fail-on=invalid-name,wrong-import-order,ungrouped-imports MY_PROJECT_NAME
         pass_filenames: false
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Check pytest unit tests pass
+        entry: pytest --color=auto
+        pass_filenames: false
+        language: system
+        # types: [python]
