@@ -6,7 +6,8 @@ VALUE_INT = {
     2: "The user did not have the necessary access.",
     3: "The service cannot be stopped because other services that are running are dependent on it.",
     4: "The requested control code is not valid, or it is unacceptable to the service.",
-    5: "The requested control code cannot be sent to the service because the state of the service (Win32_BaseService.State property) is equal to 0, 1, or 2.",
+    5: """The requested control code cannot be sent to the service because the state of the service
+     (Win32_BaseService.State property) is equal to 0, 1, or 2""",
     6: "The service has not been started.",
     7: "The service did not respond to the start request in a timely fashion.",
     8: "An unknown failure occurred when starting the service.",

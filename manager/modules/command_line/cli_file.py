@@ -1,9 +1,11 @@
 """cli file manager"""
 import logging
+
 import typer
 
-# import click_spinner
 from manager.modules.file_manager import file
+
+# import click_spinner
 
 cli = typer.Typer()
 logger = logging.getLogger()

@@ -12,7 +12,7 @@ repos:
       - id: check-json
       - id: check-toml
       - id: check-yaml
-      - id: double-quote-string-fixer
+      # - id: double-quote-string-fixer
       - id: trailing-whitespace
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.9.2
@@ -28,7 +28,7 @@ repos:
         stages: [push]
         name: pylint
         language: system
-        entry: pylint --fail-under=9 --fail-on=invalid-name,wrong-import-order,ungrouped-imports MY_PROJECT_NAME
+        entry: pylint --fail-under=9 --fail-on=invalid-name,wrong-import-order,ungrouped-imports manager
         pass_filenames: false
   - repo: local
     hooks:

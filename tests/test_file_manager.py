@@ -1,59 +1,35 @@
 import pytest
-import shutil
-import os
-import string
-import random
+
 from manager.modules.file_manager import file
+from tests import TMP_DIR_PATH
+from tests.conftest import random_string
+
+SOURCE_FILE_NAME = "source_unittest.txt"
+TARGET_FILE_NAME = "target_unittest.txt"
 
 
-class DefaultSettings:
-    CURRENT_DIR_PATH = os.path.dirname(__file__)
-    TMP_DIR_NAME = "tmp"
-    TMP_DIR_PATH = f"{CURRENT_DIR_PATH}\\{TMP_DIR_NAME}"
-
-
-@pytest.fixture(autouse=True, scope="class")
-def initialize_basic_needs():
-
-    default_settings = DefaultSettings()
-
-    if not os.path.exists(default_settings.TMP_DIR_PATH):
-        os.mkdir(default_settings.TMP_DIR_PATH)
-
-    if not os.path.isdir(default_settings.TMP_DIR_PATH):
-        return False
-
-    # wait test to finish
-    yield pytest.param
-
-    shutil.rmtree(default_settings.TMP_DIR_PATH)
-
-
-@pytest.mark.usefixtures("initialize_basic_needs")
 class TestFileManager(object):
+    @pytest.fixture(autouse=True)
+    def __setup(self) -> None:
+        """Replace init function for test classes"""
 
-    # test with right source and dest
-    # test with wrong source
-    # test with wrong dest
-    # test both wrong
+        self.source_file_path = f"{TMP_DIR_PATH}\\{SOURCE_FILE_NAME}"
+        self.target_file_path = f"{TMP_DIR_PATH}\\{TARGET_FILE_NAME}"
 
     def test_copy_file_with_right_source_and_dest(self):
 
-        default_settings = DefaultSettings()
-
-        source_file = f"{default_settings.TMP_DIR_PATH}\\source_unittest.txt"
-        target_file = f"{default_settings.TMP_DIR_PATH}\\target_unittest.txt"
-
-        with open(source_file, "w+") as source:
-            source.write("".join(random.choice(string.ascii_letters) for i in range(10)))
+        with open(self.source_file_path, "w+") as source:
+            source.write(random_string())
 
         f = file.File()
-        f.copy_single(source_file, target_file)
+        f.copy_single(self.source_file_path, self.target_file_path)
 
-        with open(source_file, "r") as s_content:
+        with open(self.source_file_path, "r") as s_content:
             source_content = s_content.read()
 
-        with open(target_file, "r") as t_content:
+        with open(self.target_file_path, "r") as t_content:
             target_content = t_content.read()
 
         assert source_content == target_content
+
+    # def test_update_content_in_a_file(self):

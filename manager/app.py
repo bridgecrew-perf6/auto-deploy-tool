@@ -1,7 +1,7 @@
 """run the app"""
-
 import logging
 from logging.handlers import TimedRotatingFileHandler
+
 from manager.modules.command_line import cli
 
 log_handler = TimedRotatingFileHandler("app.log", when="w0", backupCount=5)

@@ -1,8 +1,10 @@
 """Module to manage the command line"""
 from typing import Optional
+
 import typer
-from . import cli_windows_service
+
 from . import cli_file
+from . import cli_windows_service
 
 __version__ = "0.1.0"
 

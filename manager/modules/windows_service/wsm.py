@@ -1,8 +1,11 @@
 """Manage Windows Service"""
-
 import logging
 import time
-from wmi import WMI, _wmi_object, _wmi_namespace
+
+from wmi import _wmi_namespace
+from wmi import _wmi_object
+from wmi import WMI
+
 from .messages import Messages
 
 
