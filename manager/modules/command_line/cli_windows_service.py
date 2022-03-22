@@ -8,9 +8,9 @@ import click_spinner
 import typer
 from tabulate import tabulate
 
-from .messages import Messages
 from manager.modules.file_manager import folder
 from manager.modules.windows_service import wsm
+from .messages import Messages
 
 cli = typer.Typer()
 logger = logging.getLogger()
