@@ -32,4 +32,22 @@ class TestFileManager(object):
 
         assert source_content == target_content
 
-    # def test_update_content_in_a_file(self):
+    def test_update_content_in_a_file(self):
+
+        file_path = f"{TMP_DIR_PATH}\\update_content.txt"
+        contains_str = "mudar esse conteúdo"
+        replace_by_str = "conteúdo novo"
+
+        with open(file_path, "w+") as source:
+            source.write(
+                f"""The beauty of the sunset [{contains_str}] was
+             obscured by the industrial cranes"""
+            )
+
+        f = file.File()
+        f.update_content(file_path, contains_str, replace_by_str)
+
+        with open(file_path, "r") as target:
+            content = target.read()
+
+        assert content.find(replace_by_str) != -1
