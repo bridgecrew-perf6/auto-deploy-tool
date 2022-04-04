@@ -6,7 +6,6 @@ from src.models import WindowsServices
 
 
 class WindowsService:
-
     def __init__(self, service_name: str = None, computer_name: str = None) -> None:
         self.logger = logging.getLogger(__name__)
         self.service_name = service_name
@@ -35,13 +34,20 @@ class WindowsService:
             raise NoServiceNameDefined("you must provide the service name you want to create")
 
         try:
-            command = ['sc.exe', 'create', f'{self.service_name}',
-                       f'binPath= "{path_name}"', f'DisplayName= {display_name}', f'start={start_mode}']
+            command = [
+                "sc.exe",
+                "create",
+                f"{self.service_name}",
+                f'binPath= "{path_name}"',
+                f"DisplayName= {display_name}",
+                f"start={start_mode}",
+            ]
 
             if self.computer_name is not None:
                 command.insert(1, self.computer_name)
                 self.logger.debug(
-                    f"the service will be created on the remote server: {self.computer_name}")
+                    f"the service will be created on the remote server: {self.computer_name}"
+                )
 
             process = subprocess.run(args=command, stdout=subprocess.PIPE, universal_newlines=True)
 
@@ -82,7 +88,8 @@ class WindowsService:
             if self.computer_name is not None:
                 command.insert(1, self.computer_name)
                 self.logger.debug(
-                    f"the service will be created on the remote server: {self.computer_name}")
+                    f"the service will be created on the remote server: {self.computer_name}"
+                )
 
             process = subprocess.run(args=command, stdout=subprocess.PIPE, universal_newlines=True)
 
@@ -238,7 +245,9 @@ class WindowsService:
         self.__refresh_windows_service()
         return self.windows_service.state
 
-    def __readable_subprocess_return(self, completed_process: subprocess.CompletedProcess) -> Tuple[bool, str, int]:
+    def __readable_subprocess_return(
+        self, completed_process: subprocess.CompletedProcess
+    ) -> Tuple[bool, str, int]:
 
         return_status = False
         return_msg = completed_process.stdout
@@ -282,7 +291,8 @@ class WindowsService:
                 self.logger.debug(f"connected to service on remote machine: {self.computer_name}")
             except Exception as err:
                 self.logger.exception(
-                    f"unable to connect to service on remote machine: {self.computer_name}")
+                    f"unable to connect to service on remote machine: {self.computer_name}"
+                )
                 raise err
 
         return conn
@@ -343,19 +353,21 @@ class WindowsService:
             system_creation_classname=service_object.SystemCreationClassName,
             system_name=service_object.SystemName,
             tag_id=service_object.TagId,
-            wait_hint=service_object.WaitHint
+            wait_hint=service_object.WaitHint,
         )
 
         return windows_service
 
     def __repr__(self) -> str:
         self.__refresh_windows_service()
-        return (f" <Name: {self.windows_service.name}, "
-                f"Description: {self.windows_service.description}, "
-                f"Caption: {self.windows_service.caption}, "
-                f"State: {self.windows_service.state}, "
-                f"Path: {self.windows_service.path_name}, "
-                f"ProcessId: {self.windows_service.process_id}>")
+        return (
+            f" <Name: {self.windows_service.name}, "
+            f"Description: {self.windows_service.description}, "
+            f"Caption: {self.windows_service.caption}, "
+            f"State: {self.windows_service.state}, "
+            f"Path: {self.windows_service.path_name}, "
+            f"ProcessId: {self.windows_service.process_id}>"
+        )
 
 
 class NoPermission(Exception):
@@ -409,7 +421,8 @@ class Messages:
         19: "There is a service running under the same name.",
         20: "There are invalid characters in the name of the service.",
         21: "Invalid parameters have been passed to the service.",
-        22: "The account which this service is to run under is either invalid or lacks the permissions to run the service.",
+        22: "The account which this service is to run under is either invalid or lacks the permissions \
+            to run the service.",
         23: "The service exists in the database of services available from the system.",
         24: "The service is currently paused in the system.",
     }

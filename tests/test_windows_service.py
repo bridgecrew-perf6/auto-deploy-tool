@@ -5,7 +5,7 @@ class TestWindowsService(object):
 
     WINDOWS_SERVICE_FIXED = "EventLog"
 
-    def test_local_connection_with_service_name(self):     
+    def test_local_connection_with_service_name(self):
         windows_service = WindowsService(self.WINDOWS_SERVICE_FIXED)
         assert windows_service.conn is not None, "Unable to connect to local host"
 
