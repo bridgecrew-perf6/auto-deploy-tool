@@ -10,6 +10,9 @@ class WindowsService:
         self.logger = logging.getLogger(__name__)
         self.service_name = service_name
         self.computer_name = computer_name
+
+        self.logger.debug(f"WINDOWS SERVICE: {self.service_name}. COMPUTER NAME: {computer_name}")
+
         self.conn = self.__connect_wmi()
         self.object = self.__get_service_object()
         self.windows_service: WindowsServices = self.__windows_service_data()
@@ -152,11 +155,14 @@ class WindowsService:
 
         try:
             if self.is_running() and self.windows_service.accept_stop:
-                self.logger.debug("stopping service")
+                self.logger.debug("starting service")
                 result = self.object.StopService()
 
                 if result[0] > 0:
-                    raise NoPermission(Messages.get_readable_message(result[0]))
+                    if result[0] == 2:
+                        raise NoPermission(Messages.get_readable_message(result[0]))
+                    else:
+                        raise Exception(Messages.get_readable_message(result[0]))
 
                 if not self.is_stopped():
                     raise UnableToStop("Service is not stopped even after try to stop.")
@@ -188,7 +194,10 @@ class WindowsService:
                 result = self.object.StartService()
 
                 if result[0] > 0:
-                    raise NoPermission(Messages.get_readable_message(result[0]))
+                    if result[0] == 2:
+                        raise NoPermission(Messages.get_readable_message(result[0]))
+                    else:
+                        raise Exception(Messages.get_readable_message(result[0]))
 
                 if self.is_running():
                     raise UnableToStart("Service is not running even after try to start.")
