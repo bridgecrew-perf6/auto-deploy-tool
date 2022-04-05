@@ -1,7 +1,8 @@
 import logging
 from logging.handlers import TimedRotatingFileHandler
-from src.repositories import WindowsService
 from time import sleep
+
+from src.repositories import WindowsService
 
 log_handler = TimedRotatingFileHandler("app.log", when="w0", backupCount=5)
 logging.basicConfig(

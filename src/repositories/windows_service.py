@@ -1,7 +1,9 @@
 import logging
 import subprocess
 from typing import Tuple
+
 from wmi import WMI, _wmi_namespace, _wmi_object
+
 from src.models import WindowsServices
 
 
