@@ -30,6 +30,8 @@ repos:
     hooks:
       - id: pytest
         name: Check pytest unit tests pass
-        entry: pytest --color=auto
+        entry: pytest -vv --cov=. --cov-fail-under=0 --cov-report=term-missing --color=yes --code-highlight=yes --new-first --verbose
+        # entry: pytest --color=yes --code-highlight=yes --new-first --verbose
         pass_filenames: false
         language: system
+        always_run: true
