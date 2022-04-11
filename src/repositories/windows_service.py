@@ -38,6 +38,11 @@ class WindowsService:
         if self.service_name is None:
             raise NoServiceNameDefined("you must provide the service name you want to create")
 
+        if self.__get_service_object() is not None:
+            raise ServiceAlreadyExists(
+                "you cannot create a service with a name that already exists"
+            )
+
         try:
             command = [
                 "sc.exe",
@@ -64,11 +69,14 @@ class WindowsService:
             if not response[0]:
                 raise Exception(response[1])
 
+            if self.__get_service_object() is None:
+                raise UnableToCreate("the service has not been created")
+
             if self.start()[0]:
                 raise UnableToStart
 
         except Exception as err:
-            raise err
+            raise UnableToCreate from err
 
     def delete(self) -> None:
         """
@@ -83,6 +91,9 @@ class WindowsService:
 
         if self.service_name is None:
             raise NoServiceNameDefined("you must provide the service name you want to delete")
+
+        if self.__get_service_object() is None:
+            raise ServiceDoesNotExists("you cannot delete a service that does not exist")
 
         try:
             if not self.stop()[0]:
@@ -99,13 +110,15 @@ class WindowsService:
             process = subprocess.run(args=command, stdout=subprocess.PIPE, universal_newlines=True)
 
             response = self.__readable_subprocess_return(process)
-            self.logger.debug(response[1])
 
             if not response[0]:
                 raise Exception(response[1])
 
+            if self.__get_service_object() is not None:
+                raise UnableToDelete
+
         except Exception as err:
-            raise err
+            raise UnableToDelete from err
 
     def restart(self) -> Tuple[bool, str]:
         """
@@ -396,12 +409,32 @@ class UnableToStop(Exception):
         super().__init__(message)
 
 
+class UnableToCreate(Exception):
+    def __init__(self, message) -> None:
+        super().__init__(message)
+
+
+class UnableToDelete(Exception):
+    def __init__(self, message) -> None:
+        super().__init__(message)
+
+
 class UnknownState(Exception):
     def __init__(self, message) -> None:
         super().__init__(message)
 
 
 class NoServiceNameDefined(Exception):
+    def __init__(self, message) -> None:
+        super().__init__(message)
+
+
+class ServiceAlreadyExists(Exception):
+    def __init__(self, message) -> None:
+        super().__init__(message)
+
+
+class ServiceDoesNotExists(Exception):
     def __init__(self, message) -> None:
         super().__init__(message)
 
