@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "windows_manager"
+version = "1.0.0"
+description = "Contains module to manage windows features that are allowed only on windows machine"
+authors = ["Guilherme Rodrigues <guilherme.b.rodrigues@skf.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.75.2"
+uvicorn = {extras = ["Standard"], version = "^0.17.6"}
+pywin32 = "^303"
+WMI = "^1.5.1"
+grpcio = "^1.45.0"
+grpcio-tools = "^1.45.0"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+blue = "^0.8.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
