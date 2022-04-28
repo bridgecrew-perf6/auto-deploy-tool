@@ -20,7 +20,6 @@ logging.basicConfig(
 app = FastAPI(default_response_class=JSONResponse)
 app.include_router(prefix='/services', router=services_routes)
 
-
 @app.get('/')
 def welcome(request: Request):
     return {
