@@ -1,0 +1,7 @@
+services:
+  api:
+    build: .
+    container_name: autodeploy-backend-api
+    ports:
+      - "5001:5001"
+  
